@@ -46,9 +46,41 @@ public class Main extends AtlasHook{
         config = HdfsY.config;
         fileSystem = FileSystem.get(config);
 
+        aVoid();
 
         // Start the hook
-        notif("csv_files");
+        //notif("csv_files");
+    }
+
+
+    public static void aVoid(){
+        List<HookNotification> messages = new ArrayList<>();
+        AtlasEntity cre2 = new AtlasEntity();
+        cre2.setTypeName("renameProcess");
+
+        List<AtlasObjectId> objectIds1 = new ArrayList<>();
+
+        List<AtlasObjectId> objectIds = new ArrayList<>();
+
+
+        cre2.setAttribute("qualifiedName","p1@renameProcess");
+        cre2.setAttribute("name","p1");
+        //cre2.setAttribute("inputs",);
+        AtlasEntity cre0 = new AtlasEntity();
+        AtlasEntity cre1 = new AtlasEntity();
+        AtlasObjectId atlasObjectId = new AtlasObjectId();
+        atlasObjectId.setGuid("c9e9201c-0fe2-4e86-b3f7-84fb1deb12c3");
+        atlasObjectId.setTypeName("csv_files");
+        AtlasObjectId atlasObjectId1 = new AtlasObjectId();
+        atlasObjectId1.setGuid("b430e1fc-9a47-46b5-a101-31b8f5891de7");
+        atlasObjectId1.setTypeName("csv_files");
+        objectIds.add(atlasObjectId);
+        objectIds1.add(atlasObjectId1);
+        cre2.setAttribute("inputs",objectIds1);
+        cre2.setAttribute("outputs",objectIds);
+
+        messages.add(new EntityCreateRequestV2("yexz", new AtlasEntity.AtlasEntitiesWithExtInfo(cre2)));
+        notifyEntities(messages, null,5,null);
     }
 
 
@@ -61,7 +93,6 @@ public class Main extends AtlasHook{
         List<HookNotification> messages = new ArrayList<>();
         /**/
         while (true) {
-            i = 0;
             EventBatch events = eventStream.take();
             for (Event event : events.getEvents()) {
                 System.out.println("event type = " + event.getEventType());
@@ -102,12 +133,22 @@ public class Main extends AtlasHook{
                         System.out.println("  path = " + renameEvent.getDstPath());
 
 
+                        AtlasEntity cre0 = new AtlasEntity();
+                        cre0.setAttribute("name",renameEvent.getSrcPath().split("/")[3]);
+
                         AtlasEntity cre1 = new AtlasEntity();
                         cre1.setTypeName(TypeName);
                         String qualifiedName = renameEvent.getSrcPath().split("/")[3]+"@csv_files";
                         System.out.println("****"+qualifiedName);
                         cre1.setAttribute("qualifiedName",qualifiedName);
                         cre1.setAttribute("name",renameEvent.getDstPath().split("/")[3]);
+
+
+                        AtlasEntity cre2 = new AtlasEntity();
+                        cre2.setTypeName("renameProcess");
+                        //cre2.setAttribute("inputs",);
+
+
 
 
                         messages.add(new EntityCreateRequestV2("yexz", new AtlasEntity.AtlasEntitiesWithExtInfo(cre1)));
