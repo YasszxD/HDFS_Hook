@@ -100,6 +100,19 @@ public class Main extends AtlasHook{
                     case RENAME:
                         Event.RenameEvent renameEvent= (Event.RenameEvent) event;
                         System.out.println("  path = " + renameEvent.getDstPath());
+
+
+                        AtlasEntity cre1 = new AtlasEntity();
+                        cre1.setTypeName(TypeName);
+                        String qualifiedName = renameEvent.getSrcPath().split("/")[3]+"@csv_files";
+                        System.out.println("****"+qualifiedName);
+                        cre1.setAttribute("qualifiedName",qualifiedName);
+                        cre1.setAttribute("name",renameEvent.getDstPath().split("/")[3]);
+
+
+                        messages.add(new EntityCreateRequestV2("yexz", new AtlasEntity.AtlasEntitiesWithExtInfo(cre1)));
+                        notifyEntities(messages, null,5,null);
+
                         break;
                     case UNLINK:
                         Event.UnlinkEvent unlinkEvent = (Event.UnlinkEvent) event;

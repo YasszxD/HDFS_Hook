@@ -22,7 +22,7 @@ public class HdfsY {
     public static void main(String[] args) throws IOException, MissingEventsException, InterruptedException {
         HdfsY hdfsY = new HdfsY();
         try {
-            String filename = "csv989";
+            String filename = "csv666";
             writeFileToHDFS(filename);
             addAttr("/user/yexz/"+filename,"name",filename);
             addAttr("/user/yexz/"+filename,"displayName",filename);
